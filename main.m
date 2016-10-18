@@ -13,12 +13,10 @@ size_test = 10000;
 tic
 [ features_train, features_test ] = compute_features(images_train, images_test, method, no_vectors, j);
 
-[ neighbours, d ] = knnsearch(features_train', features_test','K',k,...
-    'NSMethod','exhaustive','Distance','euclidean');
+[ neighbours ] = knnsearch(features_train', features_test','K',k,...
+    'NSMethod','kdtree','Distance','euclidean');
 
-classifications = zeros(size_test,1);
-
-classifications = mode(reshape(labels_train(neighbours(:)),size(neighbours)),2);
+classifications  = mode(reshape(labels_train(neighbours(:)),size(neighbours)),2);
 
 performance = sum(labels_test==classifications)/size_test
 toc
