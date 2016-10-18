@@ -25,7 +25,7 @@ end
 
 % convert data from bits to some meaningful format
 addpath( 'read' )
-[ I, labels_train, I_test, labels_test ] = readMNIST( size_train, size_test );
+[ I, labels_train, I_test, labels_test ] = readMNIST( 60000, 10000 );
 
 % initialise matrices
 images_train = zeros( 28*28, size_train );
