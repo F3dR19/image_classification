@@ -1,4 +1,4 @@
-function [ images_train, images_test, labels_train, labels_test ] = read_data( size_train, size_test )
+% function [ images_train, images_test, labels_train, labels_test ] = read_data( size_train, size_test )
 % Picks images for training and testing
 %
 % Input:
@@ -11,6 +11,9 @@ function [ images_train, images_test, labels_train, labels_test ] = read_data( s
 %		labels_train = labels for train images (the digit they represent)
 %		labels_test = labels for test images (the digit they represent)
 %
+
+size_train = 600;
+size_test = 100;
 
 % Check of inputs:
 if( size_train > 60000 )
@@ -25,7 +28,7 @@ end
 
 % convert data from bits to some meaningful format
 addpath( 'read' )
-[ I, labels_train, I_test, labels_test ] = readMNIST( size_train, size_test );
+[ I, labels_train, I_test, labels_test ] = readMNIST( 60000, 10000 );
 
 % initialise matrices
 images_train = zeros( 28*28, size_train );
@@ -50,4 +53,4 @@ labels_train = labels_train( perm_train );
 labels_test = labels_test( perm_test );
 
 
-end
+%end
