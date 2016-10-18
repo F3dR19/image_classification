@@ -21,4 +21,5 @@ images_train = images_train_orig - repmat( mean, [ 1, size( images_train_orig, 2
 images_test = images_test_orig - repmat( mean, [ 1, size( images_test_orig, 2 ) ] );	
 
 
+
 end
