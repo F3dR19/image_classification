@@ -13,7 +13,8 @@ for j = 1:size_test
 	% extract current test image
 	test_image = reduced_images_test( :, j );
 	% evaluate euclidean distance squared
-	distances( j, : ) = sum( ( reduced_images_train - repmat( test_image, [ 1, size_train ] ) ).^2 );
+	distances( j, : ) = sum( ( reduced_images_train - ...
+        repmat( test_image, [ 1, size_train ] ) ).^2 );
 end
 
 % order distances from closest to furthest 
