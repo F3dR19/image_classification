@@ -19,7 +19,7 @@ elseif (method==3)
     
     % remove first few
     eigvectors_rem = eigvectors(:,(1:k)+j);
-    eigvalues_rem = eigvalues(:,(1:k)+j);
+    eigvalues_rem = eigvalues((1:k)+j,(1:k)+j);
     
     reduced_images_train = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_train;
     %reduced_images = flipud(reduced_images);
