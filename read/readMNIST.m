@@ -1,4 +1,4 @@
-function [I,labels,I_test,labels_test] = readMNIST(num)
+function [I,labels,I_test,labels_test] = readMNIST(num, num_test)
 %readMNIST MNIST handwriten image database reading.
 %
 %  Syntax
@@ -84,8 +84,8 @@ imgNum = fread(fid,1,'int32');
 rowSz = fread(fid,1,'int32');   
 colSz = fread(fid,1,'int32');   
 
-if(num<imgNum) 
-    imgNum=num; 
+if(num_test<imgNum) 
+    imgNum=num_test; 
 end
 
 for k=1:imgNum
@@ -106,8 +106,8 @@ if(magicNum~=2049)
     return;
 end
 itmNum = fread(fid,1,'int32');  
-if(num<itmNum) 
-    itmNum=num; 
+if(num_test<itmNum) 
+    itmNum=num_test; 
 end
 labels_test = uint8(fread(fid,itmNum,'uint8'));   
 
