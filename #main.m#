@@ -1,40 +1,31 @@
-<<<<<<< HEAD
-k = 10; j = 4;
-method = 1;
-size_train = 100;
-size_test = 100;
+
+size_train = 10;
+size_test = 10;
+>>>>>>> 730f8e94c68d1288041003a6509a3cceb0a978e6
 
 [ images_train, images_test, labels_train, labels_test ] = read_data(size_train,size_test);
 
 [ images_train, images_test ] = edit_data(images_train,images_test);
+tic
+[ features_train, features_test ] = compute_features(images_train, images_test, method, no_vectors, j);
 
-[ features_train, features_test ] = compute_features(images_train, images_test, method, k, j);
-
+<<<<<<< HEAD
 [ neighbours, d ] = knnsearch(features_train', features_test','K',k,...
     'NSMethod','exhaustive','Distance','euclidean');
 
-classifications = zeros(1,size_test);
+classifications = zeros(size_test,1);
 for n = 1:size_test
-    classifications(n) = mode(labels_train(neighbours(n,:)),2);
+    classifications(n) = mode(labels_train(neighbours(n,:)));
 end
-
-performance = sum(labels_test==classifications
 =======
-clear all
-close all
-clc
-
-size_train = 60000;
-size_test = 10000;
-
-[ images_train, images_test, labels_train, labels_test ] = read_data( size_train, size_test );
-
 [ images_train, images_test ] = edit_data( images_train, images_test );
 
 [ reduced_images_train, reduced_images_test ] = projection( images_train, images_test, 15 );
 
 [ classifications ] = distance( reduced_images_test, reduced_images_train, labels_train, 10 );
 
-function [ score ] = classification_score( classifications, labels )
-
+[ score ] = classification_score( classifications, labels_test )
 >>>>>>> 730f8e94c68d1288041003a6509a3cceb0a978e6
+
+performance = sum(labels_test==classifications)/size_test
+toc

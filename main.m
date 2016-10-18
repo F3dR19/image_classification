@@ -1,3 +1,7 @@
+clear all
+close all
+clc
+
 k = 10; no_vectors = 10; j = 4;
 method = 2;
 size_train = 60000;
