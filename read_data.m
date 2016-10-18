@@ -1,4 +1,4 @@
-% function [ images_train, images_test, labels_train, labels_test ] = read_data( size_train, size_test )
+function [ images_train, images_test, labels_train, labels_test ] = read_data( size_train, size_test )
 % Picks images for training and testing
 %
 % Input:
@@ -12,8 +12,6 @@
 %		labels_test = labels for test images (the digit they represent)
 %
 
-size_train = 600;
-size_test = 100;
 
 % Check of inputs:
 if( size_train > 60000 )
@@ -53,4 +51,4 @@ labels_train = labels_train( perm_train );
 labels_test = labels_test( perm_test );
 
 
-%end
+end
