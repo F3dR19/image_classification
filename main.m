@@ -17,9 +17,8 @@ tic
     'NSMethod','exhaustive','Distance','euclidean');
 
 classifications = zeros(size_test,1);
-for n = 1:size_test
-    classifications(n) = mode(labels_train(neighbours(n,:)));
-end
+
+classifications = mode(reshape(labels_train(neighbours(:)),size(neighbours)),2);
 
 performance = sum(labels_test==classifications)/size_test
 toc
