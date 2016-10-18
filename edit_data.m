@@ -8,6 +8,7 @@ function [images_train, images_test] = edit_data( images_train_orig, images_test
 % Output:
 %		- images_train = matrix containing zero-averaged train images 
 %		- images_test = matrix containing zero-averaged test images (average of train data taken) 
+%
 
 % center images by subtracting average	
 mean = sum( images_train_orig, 2 ) / size( images_train_orig, 2 );

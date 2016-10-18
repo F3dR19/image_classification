@@ -1,4 +1,4 @@
-function [ classifications ] = distance( reduced_images_test, reduced_images_train, labels_train, k )
+function [ score ] = distance( reduced_images_train, reduced_images_test, labels_train, labels_test, k )
 %UNTITLED7 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -21,6 +21,7 @@ end
 [ ~, indices ] = sort( distances, 2, 'ascend' );
 % extract the most frequent recurring (mode) label of the closest k images 
 classifications = mode( labels_train( indices( :, 1:k ) ), 2 );
+score = sum( classifications == labels_test ) / numel( classifications );
 
 end
 

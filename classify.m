@@ -8,10 +8,10 @@ function [ score ] = classify( features_train, features_test, labels_train, labe
 % 	labels_train = ground truth (ie, the digit each train image is supposed to represent)
 % 	labels_test = ground truth (ie, the digit each test image is supposed to represent)
 % 	k =  number of closest neighbours to consider for classification
+%
 %	Output:
 %		score = classification score:  number of hits / number of test images
 %
-
 
 % Search for the k closest neighbour (in euclidean sense)
 [ neighbours ] = knnsearch(features_train', features_test','K',k,...

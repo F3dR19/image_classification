@@ -8,10 +8,14 @@ function [ reduced_images_train, reduced_images_test ] = compute_features( image
 %		method = specifies the method used
 %		k = number of features to recover
 %		j = number of largest features to discard (default = 0)
-%
+% 
+% Output:
+%		reduced_images_train = projected train images		
+%		reduced_images_test = projected test images		
+%		
 
 % default value for j
-if(numargin = 4 )
+if( isempty(j) )
 	j=0;
 end
 
