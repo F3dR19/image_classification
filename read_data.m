@@ -1,5 +1,5 @@
 function [ images_train, images_test, labels_train, labels_test ] = read_data( size_train, size_test )
-% Picks images for training and testing
+% Picks images for training and testing from the MNIST dataset
 %
 % Input:
 %		size_train = Number of images to pick for training

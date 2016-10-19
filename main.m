@@ -2,21 +2,27 @@ clear all
 close all
 clc
 
-k = 10; no_vectors = 10; j = 4;
-method = 3;
+k = 10;
+no_vectors = 10;
+j = 0;
+method = 2;
 size_train = 60000;
 size_test = 10000;
 
+tic
 [ images_train, images_test, labels_train, labels_test ] = read_data(size_train,size_test);
+display(strcat('Time to read data = ',num2str(toc)))
 
+tic
 [ images_train, images_test ] = edit_data(images_train,images_test);
+display(strcat('Time to edit data = ',num2str(toc)))
+
 tic
 [ features_train, features_test ] = compute_features(images_train, images_test, method, no_vectors, j);
+display(strcat('Time to compute features = ',num2str(toc)))
 
-[ neighbours, d ] = knnsearch(features_train', features_test','K',k,...
-    'NSMethod','exhaustive','Distance','euclidean');
+tic
+score = classify( features_train, features_test, labels_train, labels_test, k ); 
+display(strcat('Time to perform classification = ',num2str(toc)))
 
-classifications = mode(reshape(labels_train(neighbours(:)),size(neighbours)),2);
-
-performance = sum(labels_test==classifications)/size_test
-toc
+disp(strcat('Computation complete! Classification score = ', num2str(score)));
