@@ -12,6 +12,8 @@ function [ images_train, images_test, labels_train, labels_test ] = read_data( s
 %		labels_test = labels for test images (the digit they represent)
 %
 
+% set seed for random number generator
+rng(1);
 
 % Check of inputs:
 if( size_train > 60000 )
