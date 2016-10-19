@@ -1,4 +1,4 @@
-function [ reduced_images_train, reduced_images_test ] = compute_features( images_train, images_test, method, k, j )
+function [ reduced_images_train, reduced_images_test ] = compute_features( images_train, images_test, labels_test, method, k, j )
 % Recovers main features using various methods, and projects images on this
 % newly found subspace
 %
@@ -20,8 +20,8 @@ if( isempty(j) )
 end
 
 
-% eigenvector decomposition		
-if (method==2)
+% PCA		
+if ( strcmp(method, 'PCA') )
     % create covariance matrix
     sigma = images_train * images_train';
 
@@ -35,8 +35,8 @@ if (method==2)
     reduced_images_train = eigvectors' * images_train;
     reduced_images_test = eigvectors' * images_test;
     
-% eigenvector decomposition with scaling		
-elseif (method==3)
+% PCA with scaling		
+if ( strcmp(method, 'PCAs') )
     % create covariance matrix
     sigma = images_train * images_train';
     
@@ -53,9 +53,42 @@ elseif (method==3)
 
     reduced_images_train = eigvectors_rem' * images_train;
     reduced_images_test = eigvectors_rem' * images_test;
-else
+		
+		
+% LDA
+elseif ( strcmp(method, 'LDA') )
+	% figure out which images correspond to which digit	
+	class_indeces = repmat( labels_test, [1,10] ) == 0:1:9;
+	% compute class sizes (ie, how many images of digits there are, per digit)
+	class_sizes = sum( class_indeces, 1 );
+	
+	classes = cell(1,10);
+	intra_class_sigma = zeros( size( images_test,1 ) ); 
+	for i = 1:10
+		% populate classes with corresponding images
+		classes{i} = images_train( :, find( class_indeces( :, i )' ) );
+		% we want them to have zero mean
+		classes{i} = classes{i} - mean( classes{i},2 );
+		% evaluate variance within classes
+		intra_class_sigma = intra_class_sigma + classes{i} * classes{i}';
+	end
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+elseif( strcmp( method, 'intensity') )
     reduced_images_train = images_train;
     reduced_images_test = images_test;
+else
+	
+	error('compute_features:invalidMethod', 'Specified method not recognised / not supported. Abort');
+
 end
 
 end
