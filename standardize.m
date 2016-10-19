@@ -5,7 +5,7 @@ function [ features_train_out, features_test_out ] = standardize( features_train
 mean_train = sum( features_train, 2 ) / size( features_train, 2 );
 std_train = std( features_train, 0, 2 );
 if (any(std_train==0))
-    fprintf('Cannot standardize features. Zero standard deviation!')
+    fprintf('Cannot standardize features. Zero standard deviation!\n')
     features_train_out = features_train;
     features_test_out = features_test;
 else

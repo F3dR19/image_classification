@@ -36,7 +36,7 @@ if ( strcmp(method, 'PCA') )
     reduced_images_test = eigvectors' * images_test;
     
 % PCA with scaling		
-if ( strcmp(method, 'PCAs') )
+elseif ( strcmp(method, 'PCAs') )
     % create covariance matrix
     sigma = images_train * images_train';
     
@@ -54,7 +54,10 @@ if ( strcmp(method, 'PCAs') )
     reduced_images_train = eigvectors_rem' * images_train;
     reduced_images_test = eigvectors_rem' * images_test;
 		
-		
+elseif( strcmp( method, 'intensity') )
+    reduced_images_train = images_train;
+    reduced_images_test = images_test;
+    
 % LDA
 elseif ( strcmp(method, 'LDA') )
 	% figure out which images correspond to which digit	
@@ -73,18 +76,6 @@ elseif ( strcmp(method, 'LDA') )
 		intra_class_sigma = intra_class_sigma + classes{i} * classes{i}';
 	end
 	
-	
-	
-	
-	
-	
-	
-	
-	
-		
-elseif( strcmp( method, 'intensity') )
-    reduced_images_train = images_train;
-    reduced_images_test = images_test;
 else
 	
 	error('compute_features:invalidMethod', 'Specified method not recognised / not supported. Abort');
