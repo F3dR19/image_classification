@@ -3,9 +3,9 @@ close all
 clc
 
 k = 10;
-no_vectors = 10;
+no_vectors = 15;
 no_remove = 0;
-method = 2;
+method = 'LDA';
 size_train = 60000;
 size_test = 10000;
 
@@ -18,7 +18,7 @@ tic
 display(strcat('Time to edit data = ',num2str(toc)))
 
 tic
-[ features_train, features_test ] = compute_features( images_train, images_test, method, no_vectors, no_remove );
+[ features_train, features_test ] = compute_features( images_train, images_test, labels_test, method, no_vectors, no_remove );
 display(strcat('Time to compute features = ',num2str(toc)))
 
 tic

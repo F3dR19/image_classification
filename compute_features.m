@@ -19,7 +19,6 @@ if( isempty(j) )
 	j=0;
 end
 
-
 % PCA		
 if ( strcmp(method, 'PCA') )
     % create covariance matrix
@@ -36,7 +35,7 @@ if ( strcmp(method, 'PCA') )
     reduced_images_test = eigvectors' * images_test;
     
 % PCA with scaling		
-if ( strcmp(method, 'PCAs') )
+elseif ( strcmp(method, 'PCAs') )
     % create covariance matrix
     sigma = images_train * images_train';
     
@@ -45,38 +44,51 @@ if ( strcmp(method, 'PCAs') )
     
     % remove first few
     eigvectors_rem = eigvectors(:,(1:k)+j);
-    eigvalues_rem = eigvalues((1:k)+j,(1:k)+j);
-    %eigvalues_rem = eigvalues; eigvectors_rem = eigvectors;
+    eigvalues_rem = eigvalues(:,(1:k)+j);
     
-    %reduced_images_train = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_train;
-    %reduced_images_test = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_test;
+    reduced_images_train = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_train;
+    reduced_images_test = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_test;
 
-    reduced_images_train = eigvectors_rem' * images_train;
-    reduced_images_test = eigvectors_rem' * images_test;
 		
 		
 % LDA
 elseif ( strcmp(method, 'LDA') )
+	% first perform PCA	
+	% create covariance matrix
+  sigma = images_train * images_train';
+    
+	% extract the k largest eigenvalues and the corresponding eigenvectors
+	[ eigvectors, ~ ] = eigs( sigma, 2*k );
+  
+	reduced_images_train = eigvectors' * images_train;
+	reduced_images_test = eigvectors' * images_test;
+
+	
+	% now do the actual LDA on the reduced images
 	% figure out which images correspond to which digit	
 	class_indeces = repmat( labels_test, [1,10] ) == 0:1:9;
 	% compute class sizes (ie, how many images of digits there are, per digit)
 	class_sizes = sum( class_indeces, 1 );
 	
-	classes = cell(1,10);
-	intra_class_sigma = zeros( size( images_test,1 ) ); 
+	means = zeros( size( reduced_images_train, 1 ), 10 );
+	intra_class_sigma = zeros( size( reduced_images_train, 1 ) ); 
+	
 	for i = 1:10
 		% populate classes with corresponding images
-		classes{i} = images_train( :, find( class_indeces( :, i )' ) );
+		class = reduced_images_train( :, find( class_indeces( :, i )' ) );
+		means( :, i ) = mean( class, 2 );
 		% we want them to have zero mean
-		classes{i} = classes{i} - mean( classes{i},2 );
+		class = class - means( :, i );
 		% evaluate variance within classes
-		intra_class_sigma = intra_class_sigma + classes{i} * classes{i}';
+		intra_class_sigma = intra_class_sigma + class * class';
 	end
 	
+	inter_class_sigma = ( means .* repmat( class_sizes, [ size(means, 1), 1 ]) ) * means';
+		
+	[ eigvectors, ~ ] = eigs( inter_class_sigma, intra_class_sigma, k );
 	
-	
-	
-	
+	reduced_images_train = real(eigvectors)' * reduced_images_train;
+	reduced_images_test = real(eigvectors)' * reduced_images_test;
 	
 	
 	
