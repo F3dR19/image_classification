@@ -1,4 +1,4 @@
-function [ score ] = classify( features_train, features_test, labels_train, labels_test, k ) 
+function [ score ] = classify( features_train, features_test, labels_train, labels_test, k, method ) 
 % Classifies test images and computes classification score
 %
 %
@@ -13,14 +13,35 @@ function [ score ] = classify( features_train, features_test, labels_train, labe
 %		score = classification score:  number of hits / number of test images
 %
 
-% Search for the k closest neighbour (in euclidean sense)
-[ neighbours ] = knnsearch(features_train', features_test','K',k,...
-    'NSMethod','kdtree','Distance','euclidean');
+if ( strcmp( method{2}, 'standardize' ) )
+     % Standardize features train & test
+    [ features_train, features_test ] = standardize( features_train, features_test );
+end
 
-% find the most recurring label of the closest neighbours (that's how the classification is done, basically)
-classifications = mode( labels_train( neighbours ), 2 );
+if ( strcmp( method{1}, 'knn' ) )
+    % Search for the k closest neighbour (in euclidean sense)
+    [ neighbours ] = knnsearch(features_train', features_test','K',k,...
+        'NSMethod','kdtree','Distance','euclidean');
 
-% score is evaluated as hit / total
-score = sum( classifications == labels_test ) / numel( classifications );
+    % find the most recurring label of the closest neighbours (that's how the classification is done, basically)
+    classifications = mode( labels_train( neighbours ), 2 );
 
+    % score is evaluated as hit / total
+    score = sum( classifications == labels_test ) / numel( classifications );
+elseif ( strcmp( method{1}, 'svm' ) )
+    % Fit SVM model
+    SVMmodel = fitcecoc( features_train', labels_train' );
+    % Predict classification
+    [ classifications, ~ ] = predict( SVMmodel, features_test' );
+    % Evaluate score
+    score = sum( classifications == labels_test ) / numel( classifications );
+elseif ( strcmp( method{1}, 'kmeans' ) )
+    k = size( unique( labels_train ), 2);
+    classifications = kmeans( features_train , k );
+else
+	
+	error('classify:invalidMethod', 'Specified method not recognised / not supported. Abort');
+
+end
+    
 end
