@@ -2,11 +2,12 @@ clear all
 close all
 clc
 
-k = 10;
-no_vectors = 10;
+k = 7;
+no_vectors = 11;
 no_remove = 0;
-method = 2;
-size_train = 60000;
+method_features = 2;
+method_classification = 'svm';
+size_train = 200;
 size_test = 10000;
 
 tic
@@ -18,11 +19,11 @@ tic
 display(strcat('Time to edit data = ',num2str(toc)))
 
 tic
-[ features_train, features_test ] = compute_features( images_train, images_test, method, no_vectors, no_remove );
+[ features_train, features_test ] = compute_features( images_train, images_test, method_features, no_vectors, no_remove );
 display(strcat('Time to compute features = ',num2str(toc)))
 
 tic
-score = classify( features_train, features_test, labels_train, labels_test, k ); 
+score = classify( features_train, features_test, labels_train, labels_test, k, method_classification ); 
 display(strcat('Time to perform classification = ',num2str(toc)))
 
 disp(strcat('Computation complete! Classification score = ', num2str(score)));

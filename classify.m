@@ -1,4 +1,4 @@
-function [ score ] = classify( features_train, features_test, labels_train, labels_test, k ) 
+function [ score ] = classify( features_train, features_test, labels_train, labels_test, k, method ) 
 % Classifies test images and computes classification score
 %
 %
@@ -13,14 +13,25 @@ function [ score ] = classify( features_train, features_test, labels_train, labe
 %		score = classification score:  number of hits / number of test images
 %
 
-% Search for the k closest neighbour (in euclidean sense)
-[ neighbours ] = knnsearch(features_train', features_test','K',k,...
-    'NSMethod','kdtree','Distance','euclidean');
+if ( method == 'knn' )
+    % Search for the k closest neighbour (in euclidean sense)
+    [ neighbours ] = knnsearch(features_train', features_test','K',k,...
+        'NSMethod','kdtree','Distance','euclidean');
 
-% find the most recurring label of the closest neighbours (that's how the classification is done, basically)
-classifications = mode( labels_train( neighbours ), 2 );
+    % find the most recurring label of the closest neighbours (that's how the classification is done, basically)
+    classifications = mode( labels_train( neighbours ), 2 );
 
-% score is evaluated as hit / total
-score = sum( classifications == labels_test ) / numel( classifications );
+    % score is evaluated as hit / total
+    score = sum( classifications == labels_test ) / numel( classifications );
+elseif ( method == 'svm' )
+    % Standardize features train & test
+    [ features_train, features_test ] = standardize( features_train, features_test );
+    % Fit SVM model
+    SVMmodel = fitcecoc( features_train', labels_train' );
+    % Predict classification
+    [ classifications, ~ ] = predict( SVMmodel, features_test' );
+    % Evaluate score
+    score = sum( classifications == labels_test ) / numel( classifications );
+end
 
 end
