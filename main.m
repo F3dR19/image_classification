@@ -5,8 +5,8 @@ clc
 k = 7;
 no_vectors = 11;
 no_remove = 0;
-method_features = 2;
-method_classification = 'svm';
+method_features = 'intensity';
+method_classification = {'kmeans','nan'};
 size_train = 200;
 size_test = 10000;
 
@@ -19,7 +19,7 @@ tic
 display(strcat('Time to edit data = ',num2str(toc)))
 
 tic
-[ features_train, features_test ] = compute_features( images_train, images_test, method_features, no_vectors, no_remove );
+[ features_train, features_test ] = compute_features( images_train, images_test, labels_test, method_features, no_vectors, no_remove );
 display(strcat('Time to compute features = ',num2str(toc)))
 
 tic
