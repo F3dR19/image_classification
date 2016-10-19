@@ -13,7 +13,7 @@ function [ score ] = classify( features_train, features_test, labels_train, labe
 %		score = classification score:  number of hits / number of test images
 %
 
-if ( method == 'knn' )
+if ( strcmp( method, 'knn' ) )
     % Search for the k closest neighbour (in euclidean sense)
     [ neighbours ] = knnsearch(features_train', features_test','K',k,...
         'NSMethod','kdtree','Distance','euclidean');
@@ -23,7 +23,7 @@ if ( method == 'knn' )
 
     % score is evaluated as hit / total
     score = sum( classifications == labels_test ) / numel( classifications );
-elseif ( method == 'svm' )
+elseif ( strcmp( method, 'svm' ) )
     % Standardize features train & test
     [ features_train, features_test ] = standardize( features_train, features_test );
     % Fit SVM model
@@ -32,6 +32,9 @@ elseif ( method == 'svm' )
     [ classifications, ~ ] = predict( SVMmodel, features_test' );
     % Evaluate score
     score = sum( classifications == labels_test ) / numel( classifications );
-end
+else
+	
+	error('classify:invalidMethod', 'Specified method not recognised / not supported. Abort');
 
+end
 end
