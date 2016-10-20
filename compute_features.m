@@ -50,7 +50,10 @@ elseif ( strcmp(method, 'PCAs') )
     reduced_images_test = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_test;
 
 		
-		
+elseif( strcmp( method, 'intensity') )
+    reduced_images_train = images_train;
+    reduced_images_test = images_test;
+    
 % LDA
 elseif ( strcmp(method, 'LDA') )
 	% first perform PCA	
@@ -90,13 +93,6 @@ elseif ( strcmp(method, 'LDA') )
 	reduced_images_train = real(eigvectors)' * reduced_images_train;
 	reduced_images_test = real(eigvectors)' * reduced_images_test;
 	
-	
-	
-	
-		
-elseif( strcmp( method, 'intensity') )
-    reduced_images_train = images_train;
-    reduced_images_test = images_test;
 else
 	
 	error('compute_features:invalidMethod', 'Specified method not recognised / not supported. Abort');

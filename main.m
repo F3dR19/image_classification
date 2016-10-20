@@ -2,14 +2,13 @@ clear all
 close all
 clc
 
-
-k = 7;
+method_features = 'intensity'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
 no_vectors = 11;
 no_remove = 0;
-method_features = 'intensity';
-method_classification = {'kmeans','nan'};
-size_train = 200;
-
+method_classification = {'kmeans','standardize'}; % options{1}: 'knn', 'svm', 'kmeans'
+                                                  % options{2}: 'standardize', 'nan'
+k = 7;
+size_train = 60000;
 size_test = 10000;
 
 tic
