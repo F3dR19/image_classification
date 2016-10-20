@@ -1,4 +1,4 @@
-function [ reduced_images_train, reduced_images_test ] = compute_features( images_train, images_test, labels_test, method, k, j )
+function [ reduced_images_train, reduced_images_test ] = compute_features( images_train, images_test, labels_train, method, k, j )
 % Recovers main features using various methods, and projects images on this
 % newly found subspace
 %
@@ -66,7 +66,7 @@ elseif ( strcmp(method, 'LDA') )
 	
 	% now do the actual LDA on the reduced images
 	% figure out which images correspond to which digit	
-	class_indeces = repmat( labels_test, [1,10] ) == 0:1:9;
+	class_indeces = repmat( labels_train, [1,10] ) == 0:1:9;
 	% compute class sizes (ie, how many images of digits there are, per digit)
 	class_sizes = sum( class_indeces, 1 );
 	
