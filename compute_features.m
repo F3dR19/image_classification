@@ -5,6 +5,7 @@ function [ reduced_images_train, reduced_images_test ] = compute_features( image
 % Input:
 %		images_train = set of train images (each of them is a column vector)
 %		images_test = set of test images (each of them is a column vector)
+%       labels_train = labels (digits shown) of train images in a column vector
 %		method = specifies the method used
 %		k = number of features to recover
 %		j = number of largest features to discard (default = 0)
@@ -21,6 +22,11 @@ end
 
 % PCA		
 if ( strcmp(method, 'PCA') )
+    % error check
+    if ( size(images_train,2) < size(images_train,1) )
+        error('compute_Features:sampleSizeError',strcat('Sample size must be >', num2str(size(images_train,1)), '.'))
+    end
+    
     % create covariance matrix
     sigma = images_train * images_train';
 
@@ -34,8 +40,17 @@ if ( strcmp(method, 'PCA') )
     reduced_images_train = eigvectors' * images_train;
     reduced_images_test = eigvectors' * images_test;
     
-% PCA with scaling		
+% PCA with removal of vectors and scaling		
 elseif ( strcmp(method, 'PCAs') )
+    % error checks
+    if ( size(images_train,2) < size(images_train,1) )
+        error('compute_features:sampleSizeError',strcat('Sample size must be >', num2str(size(images_train,1)), '.'))
+    end
+    
+    if (j>k-1)
+        error('compute_features:noRemoveError','no_remove must be an integer smaller than no_vectors.')
+    end
+    
     % create covariance matrix
     sigma = images_train * images_train';
     
@@ -49,7 +64,7 @@ elseif ( strcmp(method, 'PCAs') )
     reduced_images_train = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_train;
     reduced_images_test = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_test;
 
-		
+% intensity		
 elseif( strcmp( method, 'intensity') )
     reduced_images_train = images_train;
     reduced_images_test = images_test;
@@ -69,16 +84,16 @@ elseif ( strcmp(method, 'LDA') )
 	
 	% now do the actual LDA on the reduced images
 	% figure out which images correspond to which digit	
-	class_indeces = repmat( labels_train, [1,10] ) == 0:1:9;
+	class_indices = repmat( labels_train, [1,10] ) == 0:1:9;
 	% compute class sizes (ie, how many images of digits there are, per digit)
-	class_sizes = sum( class_indeces, 1 );
+	class_sizes = sum( class_indices, 1 );
 	
 	means = zeros( size( reduced_images_train, 1 ), 10 );
 	intra_class_sigma = zeros( size( reduced_images_train, 1 ) ); 
 	
 	for i = 1:10
 		% populate classes with corresponding images
-		class = reduced_images_train( :, find( class_indeces( :, i )' ) );
+		class = reduced_images_train( :, find( class_indices( :, i )' ) );
 		means( :, i ) = mean( class, 2 );
 		% we want them to have zero mean
 		class = class - means( :, i );

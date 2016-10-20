@@ -16,7 +16,7 @@ display(strcat('Time to edit data = ',num2str(toc)))
 tic
 score = zeros(1,length(no_vectors));
 for j = 1:length(no_vectors)
-    [ features_train, features_test ] = compute_features( images_train, images_test, method, no_vectors(j), no_remove );
+    [ features_train, features_test ] = compute_features( images_train, images_test, labels_train, method, no_vectors(j), no_remove );
     display(strcat('Time to compute features = ',num2str(toc)))
 
     tic
