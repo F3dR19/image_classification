@@ -5,9 +5,10 @@ clc
 method_features = 'PCA'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
 no_vectors = 11;
 no_remove = 0;
-method_classification = {'knn','standardize'}; % options{1}: 'knn', 'svm', 'kmeans'
-                                                  % options{2}: 'standardize', 'nan'
+
+method_classification = {'knn','standardize'}; % options{1}: 'knn', 'svm', 'kmeans' | options{2}: 'standardize', 'nan'
 k = 7;
+
 size_train = 100;
 size_test = 10000;
 
