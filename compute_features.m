@@ -5,7 +5,7 @@ function [ reduced_images_train, reduced_images_test ] = compute_features( image
 % Input:
 %		images_train = set of train images (each of them is a column vector)
 %		images_test = set of test images (each of them is a column vector)
-%       labels_train = labels (digits shown) of train images in a column vector
+%   labels_train = labels (digits shown) of train images in a column vector
 %		method = specifies the method used
 %		k = number of features to recover
 %		j = number of largest features to discard (default = 0)
@@ -107,7 +107,7 @@ elseif ( strcmp(method, 'LDA') )
 	
 	for i = 1:10
 		% populate classes with corresponding images
-		class = reduced_images_train( :, class_indeces( :, i )' );
+		class = reduced_images_train( :, class_indices( :, i )' );
 
 		means( :, i ) = mean( class, 2 );
 		% we want them to have zero mean
