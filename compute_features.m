@@ -107,7 +107,7 @@ elseif ( strcmp(method, 'LDA') )
 	
 	for i = 1:10
 		% populate classes with corresponding images
-		class = reduced_images_train( :, class_indeces( :, i )' );
+		class = reduced_images_train( :, class_indices( :, i )' );
 
 		means( :, i ) = mean( class, 2 );
 		% we want them to have zero mean

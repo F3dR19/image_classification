@@ -64,7 +64,8 @@ elseif ( strcmp( method{1}, 'kmeans' ) )
     frequencies = frequencies./repmat( sum( frequencies,2 ), [1,k] );
     imagesc( frequencies )
     title( 'Frequencies of digits in each cluster (k-means method)' ) % add title
-    xlabel( 'Digit' ); ylabel( 'Cluster' ); set( gca,'XTickLabel',0:9 ) % fix axis
+    xlabel( 'Digit' ); ylabel( 'Cluster' ); set( gca, 'XTickLabel', 0:9 ) % fix axis
+    saveas( 1, 'Plot_kmeans', 'png' )
     
     % Given cluster centroids find the nearest centroid for test images 
     [ neighbours ] = knnsearch( centroids, features_test', 'K', 1, ...
