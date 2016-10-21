@@ -9,6 +9,7 @@ method_classification = {'knn','standardize'}; % options{1}: 'knn', 'svm', 'kmea
                                                   % options{2}: 'standardize', 'nan'
 k = 10;
 size_train = 60000;
+
 size_test = 10000;
 
 tic

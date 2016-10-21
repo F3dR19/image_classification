@@ -3,14 +3,14 @@ function [ score ] = classify( features_train, features_test, labels_train, labe
 %
 %
 % Input:
-% 	features_train = reduced train images (ie, projection on eigenvectors)
-% 	features_test = reduced test images (ie, projection on eigenvectors)
-% 	labels_train = ground truth (ie, the digit each train image is supposed to represent)
-% 	labels_test = ground truth (ie, the digit each test image is supposed to represent)
-% 	k =  number of closest neighbours to consider for classification
+%   features_train = reduced train images (ie, projection on eigenvectors)
+%   features_test = reduced test images (ie, projection on eigenvectors)
+%   labels_train = ground truth (ie, the digit each train image is supposed to represent)
+%   labels_test = ground truth (ie, the digit each test image is supposed to represent)
+%   k =  number of closest neighbours to consider for classification
 %
-%	Output:
-%		score = classification score:  number of hits / number of test images
+% Output:
+%	score = classification score:  number of hits / number of test images
 %
 
 if ( strcmp( method{2}, 'standardize' ) )
@@ -41,7 +41,7 @@ elseif ( strcmp( method{1}, 'svm' ) )
 
 elseif ( strcmp( method{1}, 'kmeans' ) )
     % Digits to find
-    numbers = unique( labels_train );
+    numbers = sort(unique( labels_train ),'ascend');
 
     % Number of clusters desired is the number of digits to find
     k = size( numbers, 1 );
@@ -55,6 +55,16 @@ elseif ( strcmp( method{1}, 'kmeans' ) )
     for l = 1:k
         cluster_labels( l ) = mode( labels_train( idx( :, l ) ) );
     end
+    
+    % Create a colour map of frequencies of digits in each cluster
+    frequencies = zeros(k,k);
+    for l = 1:k
+        frequencies(l,:) = sum(labels_train( idx( :, l ) ) == numbers');
+    end
+    frequencies = frequencies./repmat( sum( frequencies,2 ), [1,k] );
+    imagesc( frequencies )
+    title( 'Frequencies of digits in each cluster (k-means method)' ) % add title
+    xlabel( 'Digit' ); ylabel( 'Cluster' ); set( gca,'XTickLabel',0:9 ) % fix axis
     
     % Given cluster centroids find the nearest centroid for test images 
     [ neighbours ] = knnsearch( centroids, features_test', 'K', 1, ...
