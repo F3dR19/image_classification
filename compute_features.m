@@ -19,6 +19,16 @@ if( isempty(j) )
 	j=0;
 end
 
+% check on number of eigenvectors (shouldn't be larger than number of images available)
+if( k + j >= size( images_train,1 ) )
+	error('compute_features:invalidParameter', 'Dimension of subspace of projection larger than image space. Abort');
+end
+
+if( j >= k )
+	error('compute_features:invalidParameter', 'Discarding more eigenvectors than the ones we keep. Abort');
+end
+
+
 % PCA		
 if ( strcmp(method, 'PCA') )
     % create covariance matrix
@@ -61,7 +71,7 @@ elseif ( strcmp(method, 'LDA') )
   sigma = images_train * images_train';
     
 	% extract the k largest eigenvalues and the corresponding eigenvectors
-	[ eigvectors, ~ ] = eigs( sigma, 2*k );
+	[ eigvectors, ~ ] = eigs( sigma, floor(size( sigma, 1 )/2 ) );
   
 	reduced_images_train = eigvectors' * images_train;
 	reduced_images_test = eigvectors' * images_test;
@@ -78,7 +88,7 @@ elseif ( strcmp(method, 'LDA') )
 	
 	for i = 1:10
 		% populate classes with corresponding images
-		class = reduced_images_train( :, find( class_indeces( :, i )' ) );
+		class = reduced_images_train( :, class_indeces( :, i )' );
 		means( :, i ) = mean( class, 2 );
 		% we want them to have zero mean
 		class = class - means( :, i );
@@ -86,10 +96,13 @@ elseif ( strcmp(method, 'LDA') )
 		intra_class_sigma = intra_class_sigma + class * class';
 	end
 	
+	% evaluate variance between classes	
 	inter_class_sigma = ( means .* repmat( class_sizes, [ size(means, 1), 1 ]) ) * means';
-		
+	
+	% compute separation hyperplanes 
 	[ eigvectors, ~ ] = eigs( inter_class_sigma, intra_class_sigma, k );
 	
+	% project on them
 	reduced_images_train = real(eigvectors)' * reduced_images_train;
 	reduced_images_test = real(eigvectors)' * reduced_images_test;
 	
