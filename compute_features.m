@@ -37,6 +37,10 @@ if ( strcmp(method, 'PCA') )
         error('compute_Features:sampleSizeError',strcat('Sample size must be >', num2str(size(images_train,1)), '.'))
     end
     
+    if (j>k-1)
+        error('compute_features:noRemoveError','no_remove must be an integer smaller than no_vectors.')
+    end
+    
     % create covariance matrix
     sigma = images_train * images_train';
 
@@ -50,7 +54,7 @@ if ( strcmp(method, 'PCA') )
     reduced_images_train = eigvectors' * images_train;
     reduced_images_test = eigvectors' * images_test;
     
-% PCA with removal of vectors and scaling		
+% PCA with scaling		
 elseif ( strcmp(method, 'PCAs') )
     % error checks
     if ( size(images_train,2) < size(images_train,1) )
@@ -69,7 +73,7 @@ elseif ( strcmp(method, 'PCAs') )
     
     % remove first few
     eigvectors_rem = eigvectors(:,(1:k)+j);
-    eigvalues_rem = eigvalues(:,(1:k)+j);
+    eigvalues_rem = eigvalues((1:k)+j,(1:k)+j);
     
     reduced_images_train = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_train;
     reduced_images_test = eigvalues_rem.^(-1/2) * eigvectors_rem' * images_test;

@@ -2,7 +2,6 @@ clear all
 close all
 clc
 
-
 k = 7;
 no_vectors = 11;
 no_remove = 0;
