@@ -1,7 +1,11 @@
+% This is a script to  perform recognition (clustering) of images of digits
+% It outputs a classification score (performance) and timings of different actions
+
 clear all
 close all
 clc
 
+%%%%%%%%%%%%%%%%%%%%%%%%%% Choose parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 method_features = 'PCA'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
 no_vectors = 11;
 no_remove = 0;
@@ -12,6 +16,7 @@ k = 7;
 size_train = 100;
 size_test = 10000;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Main program %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic
 [ images_train, images_test, labels_train, labels_test ] = read_data( size_train,size_test );
 display(strcat('Time to read data = ',num2str(toc)))

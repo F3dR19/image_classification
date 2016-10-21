@@ -5,9 +5,9 @@ clear all
 close all
 clc
 
-method_features = 'PCAs'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
-no_vectors = 8;
-no_remove = 0:7;
+method_features = 'PCA'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
+no_vectors = 1:20;
+no_remove = 0;
 
 method_classification = {'knn','standardize'}; % options{1}: 'knn', 'svm', 'kmeans' | options{2}: 'standardize', 'nan'
 k = 7;
