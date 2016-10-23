@@ -1,20 +1,22 @@
-% Script to compare perfomance of knn method for classification for
-% different number of neighbours k
+%% Script to compare perfomance of knn classification method for different number of neighbours k
+% Varying variable is input as a vector
 
 clear all
 close all
 clc
 
+%% Choose parameters
 method_features = 'LDA'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
 no_vectors = 10;
 no_remove = 0;
 
-method_classification = {'knn','standardize'}; % options{1}: 'knn', 'svm', 'kmeans' | options{2}: 'standardize', 'nan'
+method_classification = {'knn','standardize'};  % options{1}: 'knn', 'svm', 'kmeans' | options{2}: 'standardize', 'nan'
 k = 1:40;
 
 size_train = 60000;
 size_test = 10000;
 
+%% Main classification program
 tic
 [ images_train, images_test, labels_train, labels_test ] = read_data( size_train,size_test );
 display(strcat('Time to read data = ',num2str(toc)))
@@ -37,6 +39,7 @@ for j = 1:length(k)
     
 end
 
+%% Plot performance scores and save plot
 figure(1)
 plot(k,score,'-o')
 ylabel('Performance score')

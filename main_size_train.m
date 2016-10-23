@@ -1,15 +1,23 @@
+%% Script to compare perfomance of classification methods given different number of training images
+% The script is run for different seeds
+% Varying variable is input as a vector
+
 clear all
 close all
 clc
 
-k = 7;
+%% Choose parameters
+method_features = 'PCA'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
 no_vectors = 11;
 no_remove = 0;
-method_features = 2;
-method_classification = 'svm';
+
+method_classification = 'svm'; % options{1}: 'knn', 'svm', 'kmeans' | options{2}: 'standardize', 'nan'
+k = 7;
+
 size_train = 100*(8:25);
 size_test = 10000;
 
+%% Main classification program with plotting
 figure(1)
 hold on
 for seed = 1:6
@@ -40,3 +48,7 @@ end
 hold off
 ylabel('Performance score')
 xlabel('Size of train set')
+title(strcat('Classification: ',method_classification{1},', Features: ',method_features,', ',method_classification{2}))
+
+% Save plot
+saveas(1,strcat('Plot_size_train_',method_classification{1},'_',method_features,'_',method_classification{2}),'png')

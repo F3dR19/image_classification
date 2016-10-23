@@ -1,10 +1,11 @@
-% Script to compare perfomance of classification methods given different
-% number of PCA vectors for projection (no_vectors)
+%% Script to compare perfomance of classification methods given different number of PCA vectors for projection (no_vectors)
+% Varying variable is input as a vector
 
 clear all
 close all
 clc
 
+%% Choose parameters
 method_features = 'PCA'; % options: 'intensity', 'PCA', 'PCAs', 'LDA'
 no_vectors = 1:20;
 no_remove = 0;
@@ -15,6 +16,7 @@ k = 7;
 size_train = 60000;
 size_test = 10000;
 
+%% Main classification program
 tic
 [ images_train, images_test, labels_train, labels_test ] = read_data( size_train,size_test );
 display(strcat('Time to read data = ',num2str(toc)))
@@ -37,6 +39,7 @@ for j = 1:length(no_vectors)
     
 end
 
+%% Plot performance scores and save plot
 figure(1)
 plot(no_vectors,score,'-o')
 ylabel('Performance score')
