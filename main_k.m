@@ -25,10 +25,13 @@ tic
 [ images_train, images_test ] = edit_data( images_train,images_test );
 display(strcat('Time to edit data = ',num2str(toc)))
 
-tic
+
 score = zeros(1,length(k));
 for j = 1:length(k)
-    [ features_train, features_test ] = compute_features( images_train, images_test, labels_train, method_features, no_vectors, no_remove );
+		disp(strcat('####--Test with j=',num2str(j),' number of neighbours--####'))
+		
+		tic
+		[ features_train, features_test ] = compute_features( images_train, images_test, labels_train, method_features, no_vectors, no_remove );
     display(strcat('Time to compute features = ',num2str(toc)))
 
     tic
